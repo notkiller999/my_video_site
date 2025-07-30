@@ -1,35 +1,25 @@
 "use strict";
 
-import headerNav from './components/header.js';
-import slider from './components/slider.js';
-import services from './services/srvices.js';
+import renderMainPage from './modules/renderMainPage';
+import renderVideoPage from './modules/renderVideoPage';
 
-import '../style/style.css'
+import '../style/style.css';
 
+window.addEventListener('DOMContentLoaded', () => {  
+    
+    if (history.state === null) {
+        renderMainPage();
+    } else {
+        renderVideoPage(history.state.id);
 
-document.addEventListener("DOMContentLoaded", () => {
-    headerNav('header');
-
-    const { getData, createSlide } = services();
-
-    getData('https://pixabay.com/api/videos/?key=51491907-60b56695abcda45f567adef59&order=latest&per_page=20')
-        .then(data => {
-
-            const sliderWrapper = document.querySelector('.slider-wrapper');
-
-            createSlide(data, sliderWrapper);
-        })
-        .then(() => {
-            slider({
-                sliderInner: '.slider-inner',
-                sliderItems: '.slider-item',
-                sliderWrapper: '.slider-wrapper',
-                container: '.slider',
-                numberOfSlides: 6,
-                controls: true,
-                slidesPerClick: 4,
-            });
+        window.addEventListener('popstate', (e) => {
+            if (e.state === null) {
+                renderMainPage();
+            } else {
+                renderVideoPage(e.state.id);
+            }
         });
-
+    }
 });
+
 

@@ -9,6 +9,7 @@ module.exports = {
     clean: true,
   },
   mode: 'development',
+  devtool: 'eval-source-map',
   module: {
     rules: [
       {
@@ -25,10 +26,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html', 
       filename: 'index.html',       
-    }),
+    })
   ],
   devServer: {
     static: './dist',
     open: true,
+    historyApiFallback: true,
   },
 };
