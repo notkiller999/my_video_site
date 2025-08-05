@@ -325,7 +325,8 @@ const changeVideoPlayer = (data) => {
             const elem = videoVolumeRange.getBoundingClientRect(),
             height = elem.height,
             clickY = elem.top - e.clientY,
-            percent = (1 + ((clickY / height))).toFixed(2);
+            // percent = (1 + ((clickY / height))).toFixed(2);
+            percent = Math.min(Math.max((1 + ((clickY / height))).toFixed(2), 0), 1);
 
             localStorage.setItem('volume', percent);
             

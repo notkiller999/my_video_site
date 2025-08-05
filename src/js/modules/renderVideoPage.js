@@ -28,7 +28,9 @@ const renderVideoPage = (id) => {
     
     getData(`&id=${id}`)
         .then(data => {
-            renderVideoPage(data.hits[0]);            
+            renderVideoPage(data.hits[0]);     
+            console.log(data.hits[0]);
+                   
             return data.hits[0];
         })
         .then((data) => {            
