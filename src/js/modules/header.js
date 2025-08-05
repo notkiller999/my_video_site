@@ -1,6 +1,6 @@
 import renderMainPage from "./renderMainPage";
 
-const headerNav = () => {
+const headerNav = (activeCategory) => {
     const header = document.createElement('header'),
         navMenu = document.createElement('nav'),
         categoryList = document.createElement('ul');
@@ -52,8 +52,9 @@ const headerNav = () => {
     });
 
     categoryList.addEventListener('click', (e) => {
-        if (e.target.tagName === 'LI' && e.target.id !== category) {
-            renderMainPage({activeCategory: `${e.target.id}`});
+        if (e.target.tagName === 'LI' && e.target.id !== activeCategory) {
+            renderMainPage({activeCategory: `${e.target.id}`});            
+            history.pushState({}, '', '/');
         } 
     });
 

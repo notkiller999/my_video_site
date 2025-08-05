@@ -1,39 +1,66 @@
 import renderMainPage from './renderMainPage.js';
 import getResource from '../services/services.js';
 import headerNav from './header.js';
+import changeVideoPlayer from './changeVideoPlayer.js';
 
 
-const renderVideoPage = (id) => {
+const renderVideoPage = (id) => { 
+    if (!id) {
+        renderMainPage()
+        return;
+    }
+    
     const main = document.querySelector('#main'),
-        some = document.createElement('h1'),
         {header} = headerNav();
 
     main.innerHTML = ''; 
 
-    main.insertAdjacentElement('afterbegin', header);
+    main.appendChild(header)
 
-    some.textContent = `Video Page for ${id}`;
-    some.classList.add('text-center', 'text-2xl', 'font-bold', 'mt-4');
-    main.appendChild(some);
     window.addEventListener('popstate', (e) => {
+        
         if (e.state === null) {
             renderMainPage();
         } 
     });
 
-    const player = document.createElement('video'),
-        { getData } = getResource();
-    console.log(id);
+    const { getData } = getResource();
     
     getData(`&id=${id}`)
         .then(data => {
-            console.log(data);
-            
-            player.src = data.hits[0].videos.large.url;
-            player.controls = true;
-            player.classList.add('w-full', 'h-100', 'rounded');
-            main.appendChild(player);
+            renderVideoPage(data.hits[0]);            
+            return data.hits[0];
         })
+        .then((data) => {            
+            changeVideoPlayer(data);
+        })
+
+    function renderVideoPage(data) {
+    
+        const div = `
+            <div class="grid grid-cols-1 xl:grid-cols-[auto_1fr] gap-4">
+                <div id="video-wrapper" class="mx-auto lg:w-177 max-h-[432px] relative">
+                    <video  playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload nofullscreen noremoteplay" id=${data.id} data-quality="medium" class="w-full max-h-[432px] rounded">
+                        <source src=${data.videos.medium.url} type="video/mp4">
+                    </video>
+                </div>
+                <div>
+                    <div class="flex items-center">
+                        <img src=${data.userImageURL} class="object-cover rounded-full w-30 p-2">
+                        <div class="p-2 text-2xl font-bold text-black">${data.user}</div>
+                    </div>
+                    <div class="text-l font-bold text-left">
+                        <div class="p-2">Likes: ${data.likes}</div>
+                        <div class="p-2">Views: ${data.views}</div>
+                        <div class="p-2">Tags: <span class="font-normal">${data.tags}</span></div>
+                    </div>
+                    
+                </div>
+            </div>
+        `;
+
+        main.insertAdjacentHTML('beforeend', div)
+    };
 };
 
 export default renderVideoPage;

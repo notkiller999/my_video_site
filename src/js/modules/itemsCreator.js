@@ -54,16 +54,6 @@ const itemCreator = () => {
             </div>
         `;
 
-        // const videoItem = `
-        //     <div id=${data.id} class="video-item bg-white p-4 rounded shadow cursor-pointer hover:shadow-lg transition-shadow">
-        //         <div class="max-h-32 overflow-hidden object-fit-cover relative">
-        //             <img src=${data.videos.large.thumbnail} alt=${data.tags} class=" w-full h-full rounded">
-        //         </div>
-        //         <h2 class="text-xl font-semibold mt-2">${data.user}</h2>
-        //         <p class="text-gray-600">${videoDescription}</p>
-        //     </div>
-        // `;
-
         videoItem.addEventListener('click', () => {
             history.pushState({id: data.id}, '', `#${data.id}`);
             renderVideoPage(data.id);

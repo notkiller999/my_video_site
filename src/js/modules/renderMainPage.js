@@ -3,16 +3,16 @@ import slider from './slider.js';
 import services from '../services/services.js';
 import itemCreator from './itemsCreator.js';
 
-function renderMainPage({activeCategory = 'all'} = {}) {
+const renderMainPage = ({activeCategory = 'all'} = {}) => {
 
-    const { getData} = services(),
+    const { getData} = services(), 
         { createSlideItem, createVideoItem } = itemCreator(),
-        {header} = headerNav(),
+        {header} = headerNav(activeCategory),
         main = document.querySelector('#main');
 
     let pageNumber = 1;
 
-    main.innerHTML = '';
+    main.innerHTML = '';     
 
     const videoCategory = document.createElement('div'),
         videoSection = document.createElement('div'),
@@ -32,8 +32,8 @@ function renderMainPage({activeCategory = 'all'} = {}) {
 
     loadSliderItems();
 
-    function loadSliderItems() {
-        getData(`&order=latest&per_page=20`)
+    function loadSliderItems() { 
+        getData(`&order=latest&per_page=20`) 
         .then(data => {
 
             const slides = createSlideItem(data.hits);
@@ -50,7 +50,7 @@ function renderMainPage({activeCategory = 'all'} = {}) {
         });
     }
 
-    function loadItems(id, reset) {
+    function loadItems(id, reset) { 
         let category = id;
         let url = '';
 
