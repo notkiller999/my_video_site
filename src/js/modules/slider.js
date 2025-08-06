@@ -15,21 +15,7 @@ const slider = ({
     let width = 0,
         offset = 0,
         numberOfSlides = slidesCount,
-        slidesPerClick = slidesChanged;
-        
-    window.addEventListener('resize', () => {
-        if(window.innerWidth >=1024 && numberOfSlides !== 5 ) {
-            numberOfSlides = 5;
-            slidesPerClick = 4;
-        } else if(window.innerWidth <=1024 && numberOfSlides !== 3 ) {
-            numberOfSlides = 3;
-            slidesPerClick = 2;
-        } else if (window.innerWidth <=639 && numberOfSlides !== 1 ) {
-            
-            numberOfSlides = 1;
-            slidesPerClick = 1;
-        }
-    });
+        slidesPerClick = slidesChanged;  
 
     const resizeObserver = new ResizeObserver(() => {
         const computedWidth = Math.floor(+window.getComputedStyle(slideInner).width.replace(/px/g, ''));
@@ -96,6 +82,12 @@ const slider = ({
     sliderWraper.append(...slides);
     slideInner.appendChild(sliderWraper);
     slider.appendChild(parent);
+
+    changeSlidesCount();  
+
+    window.addEventListener('resize', () => {
+      changeSlidesCount();
+    });
     
     nextBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -107,7 +99,7 @@ const slider = ({
             }
             sliderWraper.style.transform = `translateX(-${offset}px)`;
         }
-    })
+    });
 
     prevBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -119,7 +111,27 @@ const slider = ({
             }
             sliderWraper.style.transform = `translateX(-${offset}px)`;
         }
-    })
+    });
+
+    function changeSlidesCount() {
+        if(window.innerWidth >=1024 && numberOfSlides !== 5 ) {
+            numberOfSlides = 5;
+            slidesPerClick = 4;
+            offset = 0;
+            sliderWraper.style.transform = `translateX(-${offset}px)`;         
+        } else if(window.innerWidth <=1024 && window.innerWidth >=640 && numberOfSlides !== 3 ) {
+            numberOfSlides = 3;
+            slidesPerClick = 2; 
+            offset = 0;
+            sliderWraper.style.transform = `translateX(-${offset}px)`;
+        } else if (window.innerWidth <=639 && numberOfSlides !== 1 ) {
+            
+            numberOfSlides = 1;
+            slidesPerClick = 1;
+            offset = 0;
+            sliderWraper.style.transform = `translateX(-${offset}px)`; 
+        }
+    }
 
     return slider;
 }

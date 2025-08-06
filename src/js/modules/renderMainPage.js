@@ -21,7 +21,7 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
         btnLoadMore = document.createElement('button');
 
     videoCategory.classList.add('text-2xl', 'text-black', 'text-center', 'font-bold', 'p-4');
-    videoSection.classList.add('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-4', 'lg:grid-cols-4', 'gap-4', 'p-4'); 
+    videoSection.classList.add('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-2', 'py-4'); 
     btnLoadMore.classList.add('transition', 'hover:bg-gray-500', 'load-more', 'bg-gray-300', 'text-white', 'px-4', 'py-2', 'rounded', 'mt-4', 'cursor-pointer');
     btnLoadMore.textContent = 'Load More';
 
