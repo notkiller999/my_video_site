@@ -41,8 +41,8 @@ const renderVideoPage = (id) => {
     
         const div = `
             <div class="grid grid-cols-1 xl:grid-cols-[auto_1fr] gap-4">
-                <div id="video-wrapper" class="mx-auto lg:w-177 max-h-[432px] relative">
-                    <video  playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload nofullscreen noremoteplay" id=${data.id} data-quality="medium" class="w-full max-h-[432px] rounded">
+                <div id="video-wrapper" class=" flex mx-auto lg:w-177 max-h-[480px] relative">
+                    <video  playsinline webkit-playsinline disablepictureinpicture controlslist="nodownload nofullscreen noremoteplay" id=${data.id} data-quality="medium" class="w-full rounded">
                         <source src=${data.videos.medium.url} type="video/mp4">
                     </video>
                 </div>

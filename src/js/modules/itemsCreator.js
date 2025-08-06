@@ -13,8 +13,8 @@ const itemCreator = () => {
             item.classList.add('slider-item', 'max-h-full', 'ml-2', 'mr-2', 'transition-all', 'hover:scale-110', 'max-h-full', 'cursor-pointer');
             item.innerHTML = `
                 <div>
-                    <div class="max-h-34 overflow-hidden relative object-fit-cover rounded">
-                        <img class="max-w-full max-h-full" src=${video.videos.large.thumbnail} alt=${video.tags}>
+                    <div class="overflow-hidden relative object-fit-cover rounded xl:h-28 lg:h-21 md:h-25 sm:h-19 max-h-25">
+                        <img class="max-w-full" src=${video.videos.large.thumbnail} alt=${video.tags}>
                     </div>
                     <div>
                         <h2 class="text-xl font-semibold mt-2">${video.user}</h2>

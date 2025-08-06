@@ -1,8 +1,8 @@
 const slider = ({
-    numberOfSlides,
-    slidesPerClick,
+    slidesCount,
+    slidesChanged,
     slides
-}) => {
+}) => {    
 
     const slider = document.createElement('div'),
         text = document.createElement('div'),
@@ -13,10 +13,26 @@ const slider = ({
         prevBtn = document.createElement('div');
 
     let width = 0,
-        offset = 0;
+        offset = 0,
+        numberOfSlides = slidesCount,
+        slidesPerClick = slidesChanged;
+        
+    window.addEventListener('resize', () => {
+        if(window.innerWidth >=1024 && numberOfSlides !== 5 ) {
+            numberOfSlides = 5;
+            slidesPerClick = 4;
+        } else if(window.innerWidth <=1024 && numberOfSlides !== 3 ) {
+            numberOfSlides = 3;
+            slidesPerClick = 2;
+        } else if (window.innerWidth <=639 && numberOfSlides !== 1 ) {
+            
+            numberOfSlides = 1;
+            slidesPerClick = 1;
+        }
+    });
 
     const resizeObserver = new ResizeObserver(() => {
-        const computedWidth = +window.getComputedStyle(slideInner).width.replace(/\D/g, '');
+        const computedWidth = Math.floor(+window.getComputedStyle(slideInner).width.replace(/px/g, ''));
         width = Math.floor(computedWidth / numberOfSlides);
         slides.forEach(slide => {
             slide.style.width = width + 'px';
@@ -30,7 +46,7 @@ const slider = ({
     text.classList.add('text-2xl', 'text-black', 'text-center', 'font-bold', 'p-4');
     text.textContent = 'Latest videos';
     parent.classList.add('relative', 'block', 'w-full');
-    slideInner.classList.add('slider-inner', 'h-46', 'w-full', 'relative', 'overflow-x-clip', 'overflow-y-visible');
+    slideInner.classList.add('slider-inner', 'h-46', 'w-full', 'relative', 'overflow-x-clip', 'overflow-y-visible', 'lg:h-35', 'md:h-40', 'sm:h-35');
     sliderWraper.classList.add('slider-wrapper', 'flex', 'transition', 'duration-500', 'h-full');
     nextBtn.classList.add('slider-btn--next');
     prevBtn.classList.add('slider-btn--prev');  
@@ -40,13 +56,12 @@ const slider = ({
     nextBtn.style.cssText = `
         position: absolute;
         top: 50%;
-        right: -50px;
         transform: translateY(-50%);
         z-index: 100;
         width: 50px;
         height: 50px;
         border: 2px solid black;
-        color: black;
+        color: white;
         opacity: 0.9;
         text-align: center;
         font-size: 30px;
@@ -57,19 +72,22 @@ const slider = ({
     prevBtn.style.cssText = `
         position: absolute;
         top: 50%;
-        left: -50px;
+        
         transform: translateY(-50%);
         z-index: 100;
         width: 50px;
         height: 50px;
         border: 2px solid black;
-        color: black;
+        color: white;
         opacity: 0.9;
         text-align: center;
         font-size: 30px;
         transition: opacity .15s ease;
         cursor: pointer;
     `;
+
+    prevBtn.classList.add('bg-gray-600/50','md:left-[-50px]','sm:left-[-10px]', 'rounded');
+    nextBtn.classList.add('bg-gray-600/50', 'md:right-[-50px]', 'sm:right-[-10px]', 'right-[-10px]', 'rounded')
 
     parent.appendChild(nextBtn);
     parent.appendChild(prevBtn);

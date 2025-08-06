@@ -252,10 +252,10 @@ const changeVideoPlayer = (data) => {
     function fullscreenToggle() {
         if (document.fullscreenElement) {
             document.exitFullscreen();
-            video.classList.add('max-h-[432px]');
+            // video.classList.add('max-h-[432px]');
         } else {
             wrapper.requestFullscreen();
-            video.classList.remove('max-h-[432px]');
+            // video.classList.remove('max-h-[432px]');
         }
     };
 
@@ -299,7 +299,7 @@ const changeVideoPlayer = (data) => {
         video.currentTime = video.currentTime + (time - video.currentTime);
     };
 
-    function changeVolume(e) {
+    async function changeVolume(e) {
 
         if(!e && savedVolume) {
            videoVolumeChange.style.height = `${savedVolume * 100}%`;
@@ -325,7 +325,6 @@ const changeVideoPlayer = (data) => {
             const elem = videoVolumeRange.getBoundingClientRect(),
             height = elem.height,
             clickY = elem.top - e.clientY,
-            // percent = (1 + ((clickY / height))).toFixed(2);
             percent = Math.min(Math.max((1 + ((clickY / height))).toFixed(2), 0), 1);
 
             localStorage.setItem('volume', percent);

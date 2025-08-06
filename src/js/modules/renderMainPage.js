@@ -10,9 +10,11 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
         {header} = headerNav(activeCategory),
         main = document.querySelector('#main');
 
-    let pageNumber = 1;
+    let pageNumber = 1,
+        slidesCount = 5,
+        slidesChanged = 4;
 
-    main.innerHTML = '';     
+    main.innerHTML = '';   
 
     const videoCategory = document.createElement('div'),
         videoSection = document.createElement('div'),
@@ -26,7 +28,7 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
     main.insertAdjacentElement('beforeend', videoCategory);
     main.insertAdjacentElement('beforeend', videoSection);
     main.insertAdjacentElement('beforeend', btnLoadMore);
-    main.insertAdjacentElement('afterbegin', header);   
+    main.insertAdjacentElement('afterbegin', header);  
     
     loadItems(activeCategory, true);
 
@@ -40,14 +42,14 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
 
             return slides;
         })
-        .then((slides) => {
+        .then((slides) => {   
             header.insertAdjacentElement('afterend', slider({
-                numberOfSlides: 5,
+                slidesCount,
                 controls: true,
-                slidesPerClick: 4,
+                slidesChanged,
                 slides
             }));
-        });
+        })
     }
 
     function loadItems(id, reset) { 
@@ -68,7 +70,7 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
                     videoSection.appendChild(createVideoItem(video));
                 });
             });
-    };    
+    };  
 
     btnLoadMore.addEventListener('click', () => {
         ++pageNumber;
