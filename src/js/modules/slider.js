@@ -17,7 +17,7 @@ const slider = ({
         numberOfSlides = slidesCount,
         slidesPerClick = slidesChanged;  
 
-    const resizeObserver = new ResizeObserver(() => {
+    const resizeObserver = new ResizeObserver(() => {  //observing changing display size for correct working slider
         const computedWidth = Math.floor(+window.getComputedStyle(slideInner).width.replace(/px/g, ''));
         width = Math.floor(computedWidth / numberOfSlides);
         slides.forEach(slide => {
@@ -27,6 +27,8 @@ const slider = ({
     });
 
     resizeObserver.observe(slideInner);
+
+    //add style and classes
 
     slider.classList.add('slider');
     text.classList.add('text-2xl', 'text-black', 'text-center', 'font-bold', 'p-4', 'dark:text-white');
@@ -73,7 +75,9 @@ const slider = ({
     `;
 
     prevBtn.classList.add('bg-gray-600/50','md:left-[-50px]','sm:left-[-10px]', 'rounded');
-    nextBtn.classList.add('bg-gray-600/50', 'md:right-[-50px]', 'sm:right-[-10px]', 'right-[-10px]', 'rounded')
+    nextBtn.classList.add('bg-gray-600/50', 'md:right-[-50px]', 'sm:right-[-10px]', 'right-[-10px]', 'rounded');
+
+    // add elements to a page
 
     parent.appendChild(nextBtn);
     parent.appendChild(prevBtn);
@@ -113,7 +117,7 @@ const slider = ({
         }
     });
 
-    function changeSlidesCount() {
+    function changeSlidesCount() { //change count of visiple cards in slider depend of screen size
         if(window.innerWidth >=1024 && numberOfSlides !== 5 ) {
             numberOfSlides = 5;
             slidesPerClick = 4;

@@ -1,3 +1,4 @@
+import changeTheme from "./changeTheme";
 import renderMainPage from "./renderMainPage";
 
 const headerNav = (activeCategory) => {
@@ -30,15 +31,16 @@ const headerNav = (activeCategory) => {
         "music"
     ];
 
+    // stilisation and adding classes
+
     header.classList.add('w-full', 'bg-gray-50', 'text-black', 'p-4', 'text-center');
-
     navMenu.classList.add('mt-4', 'p-2');
-
     categoryList.classList.add('justify-center', 'space-x-4', 'flex-wrap', 'hidden', 'md:flex');
     header.classList.add('dark:bg-slate-900', 'dark:text-white')
-
     showCategory.classList.add('block', 'block', 'md:hidden', 'transition', 'hover:bg-gray-500', 'load-more', 'bg-gray-300', 'text-white', 'px-4', 'py-2', 'rounded', 'mt-4', 'cursor-pointer');
     showCategory.textContent = 'Show categoryes';
+
+    // adding elements to page
 
     header.innerHTML = `
         <div class="relative p-6">
@@ -47,23 +49,11 @@ const headerNav = (activeCategory) => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold sm:text-center text-right">My Video Site</h1>
+            <h1 class="title cursor-pointer text-3xl font-bold sm:text-center text-right">My Video Site</h1>
         </div>
     `;
 
-    
-
-    header.addEventListener('click', (e) => {        
-        if (e.target.classList.contains('icon')) {
-            document.querySelector('html').classList.toggle('dark');
-        }
-    });
-
     header.insertAdjacentElement('beforeend',showCategory);
-
-    showCategory.addEventListener('click', () => {
-        categoryList.classList.toggle('hidden');
-    })
 
     category.forEach(item => {
         const listItem = document.createElement('li');
@@ -75,7 +65,22 @@ const headerNav = (activeCategory) => {
 
     });
 
-    categoryList.addEventListener('click', (e) => {
+    //events 
+
+    header.addEventListener('click', (e) => { 
+        if (e.target.classList.contains('icon')) {
+            changeTheme(true); //toggle theme
+        } else if (e.target.classList.contains('title')) {
+            renderMainPage(); //open mine page by click on title
+            history.pushState(null, '','/');
+        }
+    });
+
+    showCategory.addEventListener('click', () => { //for mobile to show category list
+        categoryList.classList.toggle('hidden');
+    })
+
+    categoryList.addEventListener('click', (e) => { //change category and show new cards 
         if (e.target.tagName === 'LI' && e.target.id !== activeCategory) {
             renderMainPage({activeCategory: `${e.target.id}`});            
             history.pushState({}, '', '/');

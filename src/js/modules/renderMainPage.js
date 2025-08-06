@@ -17,13 +17,19 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
         slidesCount = 5,
         slidesChanged = 4;
 
-    main.innerHTML = '';   
+    main.innerHTML = '';
+
+
+    
+    // stylisation and adding classes
 
     videoCategory.classList.add('text-2xl', 'text-black', 'text-center', 'font-bold', 'p-4', 'dark:text-white');
     videoSection.classList.add('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-2', 'py-4'); 
     btnLoadMore.classList.add('transition', 'hover:bg-gray-500', 'load-more', 'bg-gray-300', 'text-white', 'px-4', 'py-2', 'rounded', 'mt-4', 'cursor-pointer', 
         'dark:bg-sky-900', 'dark:text-sky-200', 'dark:hover:text-white', 'dark:hover:bg-sky-700');
     btnLoadMore.textContent = 'Load More';
+
+    // add elements to page
 
     main.insertAdjacentElement('beforeend', videoCategory);
     main.insertAdjacentElement('beforeend', videoSection);
@@ -34,7 +40,7 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
 
     loadSliderItems();
 
-    function loadSliderItems() { 
+    function loadSliderItems() { //get data create cards for slider
         getData(`&order=latest&per_page=20`) 
         .then(data => {
 
@@ -45,18 +51,17 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
         .then((slides) => {   
             header.insertAdjacentElement('afterend', slider({
                 slidesCount,
-                controls: true,
                 slidesChanged,
                 slides
             }));
         })
     }
 
-    function loadItems(id, reset) { 
+    function loadItems(id, reset) { // get data and create main cards 
         let category = id;
         let url = '';
 
-        reset ? videoSection.innerHTML = '' : null;
+        reset ? videoSection.innerHTML = '' : null; // chekc if need to load more cards or replace cards
         videoCategory.textContent = category.charAt(0).toUpperCase() + category.slice(1) + ' videos';
 
         if (category === 'all') {
@@ -72,7 +77,7 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
             });
     };  
 
-    btnLoadMore.addEventListener('click', () => {
+    btnLoadMore.addEventListener('click', () => { //load more cards
         ++pageNumber;
         loadItems(activeCategory, false);
     });

@@ -61,6 +61,8 @@ const changeVideoPlayer = (data) => {
         hideVolumeTimeoute,
         isDragging = false;
 
+    //set visual, adding classes
+
     videoPanelWrapper.classList.add('text-white', 'absolute', 'w-full', 'h-15', 'bottom-0', 'bg-gradient-to-t', 
     'from-gray-900/90', 'to-gray-900/0', 'hover:opacity-100', 'transition', 'duration-400', 'panel');
     videoFullTimline.classList.add('absolute', 'bottom-12', 'w-[97%]', 'left-1/2', 'transform', '-translate-x-1/2', 'h-[3px]', 'bg-white/40', 'cursor-pointer');
@@ -90,6 +92,8 @@ const changeVideoPlayer = (data) => {
 
     videoTimer.textContent = `${currentMinutes}:${currentSeconds}/${totalMinutes}:${totalSeconds}`;
 
+    //adding elements to a page
+
     videoPanelWrapper.append(videoFullTimline, videoPanel, videoSettingsMenu, videoVolumeMenu);
     videoFullTimline.append(videoRealtimeTimline);
     videoRealtimeTimline.append(videoDraggableTimline);
@@ -104,7 +108,7 @@ const changeVideoPlayer = (data) => {
     changeVolume();
     createQualityMenu(data.videos, videoQualityList);
 
-    if (savedTime > 1) {
+    if (savedTime > 1) {  // check if video was watching add button for continue watching from paused time
         wrapper.append(videoContinue);
         videoContinue.textContent = `Continue watching from ${addZero(Math.floor(savedTime / 60))}:${addZero(Math.floor(savedTime % 60))}`;
         videoContinue.addEventListener('click', () => {
@@ -112,7 +116,9 @@ const changeVideoPlayer = (data) => {
             playPause();
             videoContinue.remove();
         });
-    };    
+    };
+
+    //add events 
 
     videoPlayButton.addEventListener('click', playPause);
     video.addEventListener('click', playPause);
@@ -205,7 +211,9 @@ const changeVideoPlayer = (data) => {
         }        
     });
 
-    function playPause() {
+    //functions section
+
+    function playPause() { //play/pause function
 
         if(videoContinue) videoContinue.remove();
         
@@ -223,7 +231,7 @@ const changeVideoPlayer = (data) => {
         }
     };
 
-    function changeMute() {
+    function changeMute() { //toggl mute function
         if (video.muted) {
             video.muted = false;
             videoVolume.innerHTML = volumeIcon;
@@ -233,11 +241,11 @@ const changeVideoPlayer = (data) => {
         };
     };
 
-    function addZero(num) {
+    function addZero(num) { // function for adding zero before number for better visual
         return +num < 10 ? "0" + num : num;
     };
 
-    function timeUpdate() {
+    function timeUpdate() { // update time on video and recording it to localStorage
         const percent = Math.min((video.currentTime / data.duration) * 100, 100);
 
         currentMinutes = addZero(Math.floor(video.currentTime / 60));
@@ -247,9 +255,17 @@ const changeVideoPlayer = (data) => {
         videoDraggableTimline.style.left = `calc(${percent}% - 5px)`;
 
         localStorage.setItem(video.getAttribute('id'), video.currentTime.toFixed(2));
+        
+        if (video.currentTime >= data.duration) {
+            video.pause();
+            video.currentTime = 0;
+            videoPanelWrapper.classList.add('opacity-100');
+            videoPlay.innerHTML = playIcon;
+            videoPlayButton.classList.remove('hidden');
+        }
     };
 
-    function fullscreenToggle() {
+    function fullscreenToggle() { //toggle fullscreen mode video
 
         if (!wrapper || !wrapper.isConnected) {
             console.warn('wrapper not connected');
@@ -260,23 +276,25 @@ const changeVideoPlayer = (data) => {
             document.exitFullscreen();
         } else {
             wrapper.requestFullscreen();
+            
         }
     };
 
-    let time = 0;
-
-    function changeQuality(e, url) {
-        const paused = video.paused;
+    function changeQuality(e, url) { //changing quality video
+        const paused = video.paused,
             time = video.currentTime;
 
         videoQualityList.querySelectorAll('li').forEach(item => item.classList.remove('bg-red-700'));
         e.target.classList.add('bg-red-700');        
         video.src = url;  
-        video.currentTime = time;
-        paused ? video.pause() : video.play();               
+        video.addEventListener('loadedmetadata', () => { //check video is ready for play
+            video.currentTime = time;
+            paused ? video.pause() : video.play();
+        });
+                 
     };
 
-    function createQualityMenu(data, elem) {  
+    function createQualityMenu(data, elem) {  //creating menu with list of quality video
         
         const quality = video.getAttribute('data-quality');
 
@@ -293,7 +311,7 @@ const changeVideoPlayer = (data) => {
         });
     };
 
-    function rewinding(e) {
+    function rewinding(e) { // function for rewindin video and stilisate timline
         const elem = videoFullTimline.getBoundingClientRect(),
             width = elem.width,
             clickX = e.clientX - elem.left,
@@ -305,7 +323,7 @@ const changeVideoPlayer = (data) => {
         video.currentTime = video.currentTime + (time - video.currentTime);
     };
 
-    async function changeVolume(e) {
+    async function changeVolume(e) { // control volume of video
 
         if(!e && savedVolume) {
            videoVolumeChange.style.height = `${savedVolume * 100}%`;
@@ -343,13 +361,13 @@ const changeVideoPlayer = (data) => {
         }
     };
 
-    function onDragging(e) {
+    function onDragging(e) { // for possibility change time or volume by draggin 
         e.preventDefault();
         document.body.style.userSelect = 'none';          
         document.addEventListener('mousemove', (e) => onDraggingListener(e));
     };
 
-    function onDraggingListener(e) {
+    function onDraggingListener(e) { // check target and decide what change 
 
         switch (isDragging) {
             case false:

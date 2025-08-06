@@ -2,7 +2,7 @@ import renderVideoPage from "./renderVideoPage";
 
 const itemCreator = () => {
 
-    const createSlideItem = (data) => {
+    const createSlideItem = (data) => { // creat cards for slider
 
         const items = [];
 
@@ -32,7 +32,7 @@ const itemCreator = () => {
         return items;
     };
 
-    const createVideoItem = (data) => {
+    const createVideoItem = (data) => { // create cards for main menu
         let videoDescription = '';
 
         if (data.tags.length > 60) {
@@ -59,7 +59,7 @@ const itemCreator = () => {
         `;
 
         
-        videoItem.addEventListener('mouseenter', () => {
+        videoItem.addEventListener('mouseenter', () => { // play video in car when mouse above card
             const video = videoItem.querySelector('video');
             video.muted = true;
             if (video.readyState >= 3) {
@@ -71,13 +71,13 @@ const itemCreator = () => {
             }
         });     
 
-        videoItem.addEventListener('mouseleave', () => {
+        videoItem.addEventListener('mouseleave', () => { //stop video in card then mouse leave
             const video = videoItem.querySelector('video');
             video.currentTime = 0;
             video.pause();
         });
 
-        videoItem.addEventListener('click', () => {
+        videoItem.addEventListener('click', () => { //open video page on click
             history.pushState({id: data.id}, '', `#${data.id}`);
             renderVideoPage(data.id);
         });

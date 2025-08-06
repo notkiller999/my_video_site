@@ -4,8 +4,11 @@ import renderMainPage from './modules/renderMainPage';
 import renderVideoPage from './modules/renderVideoPage';
 
 import '../style/style.css';
+import changeTheme from './modules/changeTheme';
 
 window.addEventListener('DOMContentLoaded', () => {  
+
+    changeTheme(false);
 
     if (!window.location.hash) {
         renderMainPage();

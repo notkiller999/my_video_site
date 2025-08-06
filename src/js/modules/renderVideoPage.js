@@ -5,26 +5,14 @@ import changeVideoPlayer from './changeVideoPlayer.js';
 
 
 const renderVideoPage = (id) => { 
-    if (!id) {
-        renderMainPage()
-        return;
-    }
     
     const main = document.querySelector('#main'),
-        {header} = headerNav();
+        {header} = headerNav(),
+        { getData } = getResource();
 
     main.innerHTML = ''; 
 
     main.appendChild(header)
-
-    window.addEventListener('popstate', (e) => {
-        
-        if (e.state === null) {
-            renderMainPage();
-        } 
-    });
-
-    const { getData } = getResource();
     
     getData(`&id=${id}`)
         .then(data => {
