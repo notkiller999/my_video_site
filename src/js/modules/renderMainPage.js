@@ -8,7 +8,10 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
     const { getData} = services(), 
         { createSlideItem, createVideoItem } = itemCreator(),
         {header} = headerNav(activeCategory),
-        main = document.querySelector('#main');
+        main = document.querySelector('#main'),
+        videoCategory = document.createElement('div'),
+        videoSection = document.createElement('div'),
+        btnLoadMore = document.createElement('button');
 
     let pageNumber = 1,
         slidesCount = 5,
@@ -16,13 +19,10 @@ const renderMainPage = ({activeCategory = 'all'} = {}) => {
 
     main.innerHTML = '';   
 
-    const videoCategory = document.createElement('div'),
-        videoSection = document.createElement('div'),
-        btnLoadMore = document.createElement('button');
-
-    videoCategory.classList.add('text-2xl', 'text-black', 'text-center', 'font-bold', 'p-4');
+    videoCategory.classList.add('text-2xl', 'text-black', 'text-center', 'font-bold', 'p-4', 'dark:text-white');
     videoSection.classList.add('grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-4', 'gap-2', 'py-4'); 
-    btnLoadMore.classList.add('transition', 'hover:bg-gray-500', 'load-more', 'bg-gray-300', 'text-white', 'px-4', 'py-2', 'rounded', 'mt-4', 'cursor-pointer');
+    btnLoadMore.classList.add('transition', 'hover:bg-gray-500', 'load-more', 'bg-gray-300', 'text-white', 'px-4', 'py-2', 'rounded', 'mt-4', 'cursor-pointer', 
+        'dark:bg-sky-900', 'dark:text-sky-200', 'dark:hover:text-white', 'dark:hover:bg-sky-700');
     btnLoadMore.textContent = 'Load More';
 
     main.insertAdjacentElement('beforeend', videoCategory);

@@ -29,7 +29,7 @@ const slider = ({
     resizeObserver.observe(slideInner);
 
     slider.classList.add('slider');
-    text.classList.add('text-2xl', 'text-black', 'text-center', 'font-bold', 'p-4');
+    text.classList.add('text-2xl', 'text-black', 'text-center', 'font-bold', 'p-4', 'dark:text-white');
     text.textContent = 'Latest videos';
     parent.classList.add('relative', 'block', 'w-full');
     slideInner.classList.add('slider-inner', 'h-46', 'w-full', 'relative', 'overflow-x-clip', 'overflow-y-visible', 'lg:h-35', 'md:h-40', 'sm:h-35');

@@ -153,10 +153,10 @@ const changeVideoPlayer = (data) => {
     videoFullTimline.addEventListener('click', (e) => rewinding(e));
 
     videoDraggableTimline.addEventListener('mousedown', (e) => {
-        onDragging(e);
         isDragging = 'timline';
         videoRealtimeTimline.classList.remove('duration-300', 'transition-[width]');
         videoDraggableTimline.classList.remove('duration-300', 'transition-[left,transform]');
+        onDragging(e);
     });
 
     document.addEventListener('mouseup', () => {
@@ -173,7 +173,7 @@ const changeVideoPlayer = (data) => {
 
     videoVolumeRange.addEventListener('click', (e) => changeVolume(e));
 
-    document.addEventListener('keydown', (e) => {
+    document.body.addEventListener('keydown', (e) => {
         
         switch (e.key.toLowerCase()) {
             case ' ':
@@ -250,24 +250,30 @@ const changeVideoPlayer = (data) => {
     };
 
     function fullscreenToggle() {
+
+        if (!wrapper || !wrapper.isConnected) {
+            console.warn('wrapper not connected');
+            return
+        }
+
         if (document.fullscreenElement) {
             document.exitFullscreen();
-            // video.classList.add('max-h-[432px]');
         } else {
             wrapper.requestFullscreen();
-            // video.classList.remove('max-h-[432px]');
         }
     };
 
+    let time = 0;
+
     function changeQuality(e, url) {
-        const paused = video.paused,
+        const paused = video.paused;
             time = video.currentTime;
 
         videoQualityList.querySelectorAll('li').forEach(item => item.classList.remove('bg-red-700'));
         e.target.classList.add('bg-red-700');        
-        video.src = url;                    
+        video.src = url;  
         video.currentTime = time;
-        paused ? video.pause() : video.play();
+        paused ? video.pause() : video.play();               
     };
 
     function createQualityMenu(data, elem) {  

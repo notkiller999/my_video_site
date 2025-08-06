@@ -42,7 +42,7 @@ const itemCreator = () => {
         }
 
         const videoItem = document.createElement('div');
-        videoItem.classList.add('video-item', 'bg-white', 'p-2', 'rounded', 'shadow', 'cursor-pointer', 'hover:shadow-lg', 'transition-shadow');
+        videoItem.classList.add('video-item', 'bg-white', 'p-2', 'rounded', 'shadow', 'cursor-pointer', 'hover:shadow-lg', 'transition-shadow', 'dark:bg-slate-800');
         videoItem.id = data.id;
         
         videoItem.innerHTML = `
@@ -54,7 +54,7 @@ const itemCreator = () => {
                     
                 </div>
                 <h2 class="text-xl font-semibold mt-2">${data.user}</h2>
-                <p class="text-gray-600">${videoDescription}</p>
+                <p class="text-gray-600 dark:text-gray-400">${videoDescription}</p>
             </div>
         `;
 
