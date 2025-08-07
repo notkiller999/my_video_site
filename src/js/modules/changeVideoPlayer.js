@@ -61,6 +61,7 @@ const changeVideoPlayer = (data) => {
         hideVolumeTimeoute,
         isDragging = false,
         hideMouseTimout,
+        hideSettingTimout,
         hideCanceled = false;
 
     //set visual, adding classes
@@ -128,7 +129,21 @@ const changeVideoPlayer = (data) => {
     videoVolume.addEventListener('click', changeMute);
     video.addEventListener('timeupdate', timeUpdate);
     videoFullScreen.addEventListener('click', fullscreenToggle);
-    videoSettings.addEventListener('click', () => videoSettingsMenu.classList.toggle('hidden'));
+
+    videoSettings.addEventListener('click', () => {
+        videoSettingsMenu.classList.toggle('hidden');
+        if (!videoSettingsMenu.classList.contains('hidden')) {
+            hideSettingTimout = setTimeout(() => videoSettingsMenu.classList.toggle('hidden'), 5000);
+        };
+    });
+
+    videoSettingsMenu.addEventListener('mouseenter', () => clearInterval(hideSettingTimout));
+
+    videoSettingsMenu.addEventListener('mouseleave', () => {
+        if (!videoSettingsMenu.classList.contains('hidden')) {
+            hideSettingTimout = setTimeout(() => videoSettingsMenu.classList.toggle('hidden'), 3000);
+        };
+    })
 
     wrapper.addEventListener('mouseover', (e) => {
         if(!video.paused) {
