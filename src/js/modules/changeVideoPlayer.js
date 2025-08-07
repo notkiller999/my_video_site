@@ -59,7 +59,9 @@ const changeVideoPlayer = (data) => {
     let currentMinutes = addZero(0),
         currentSeconds = addZero(0),
         hideVolumeTimeoute,
-        isDragging = false;
+        isDragging = false,
+        hideMouseTimout,
+        hideCanceled = false;
 
     //set visual, adding classes
 
@@ -127,6 +129,33 @@ const changeVideoPlayer = (data) => {
     video.addEventListener('timeupdate', timeUpdate);
     videoFullScreen.addEventListener('click', fullscreenToggle);
     videoSettings.addEventListener('click', () => videoSettingsMenu.classList.toggle('hidden'));
+
+    wrapper.addEventListener('mouseover', (e) => {
+        if(!video.paused) {
+            hideShowPanel('show');
+            e.target.addEventListener('mousemove', () => {
+                clearTimeout(hideMouseTimout);
+                hideShowPanel('show');
+                hideMouseTimout = setTimeout(() => {                    
+                    hideShowPanel('hide')
+                }, 6000);
+            })
+            hideMouseTimout = setTimeout(() => {
+                hideShowPanel('hide')
+            }, 6000);
+        };
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+        if(video.paused) {
+            clearTimeout(hideMouseTimout);
+            hideShowPanel('show');
+        } else {
+            hideMouseTimout = setTimeout(() => {
+                hideShowPanel('hide')
+            }, 6000);
+        };
+    });
 
     videoVolume.addEventListener('mouseenter', () => {
         videoVolumeMenu.classList.remove('hidden');
@@ -214,18 +243,22 @@ const changeVideoPlayer = (data) => {
     //functions section
 
     function playPause() { //play/pause function
-
+        console.log(`play: ${hideMouseTimout}`);
+        
+        clearTimeout(hideMouseTimout);
         if(videoContinue) videoContinue.remove();
         
         if (video.paused) {
+            hideCanceled = false;
             video.play();
-            videoPanelWrapper.classList.add('opacity-0');
+            hideShowPanel('hide');
             videoPlay.innerHTML = pauseIcon;
             videoPlayButton.classList.add('hidden');
                 
         } else {
+            hideCanceled = true;
             video.pause();
-            videoPanelWrapper.classList.add('opacity-100');
+            hideShowPanel('show');
             videoPlay.innerHTML = playIcon;
             videoPlayButton.classList.remove('hidden');
         }
@@ -259,7 +292,7 @@ const changeVideoPlayer = (data) => {
         if (video.currentTime >= data.duration) {
             video.pause();
             video.currentTime = 0;
-            videoPanelWrapper.classList.add('opacity-100');
+            hideShowPanel('show');
             videoPlay.innerHTML = playIcon;
             videoPlayButton.classList.remove('hidden');
         }
@@ -276,7 +309,6 @@ const changeVideoPlayer = (data) => {
             document.exitFullscreen();
         } else {
             wrapper.requestFullscreen();
-            
         }
     };
 
@@ -380,6 +412,18 @@ const changeVideoPlayer = (data) => {
             case 'volume':
                 changeVolume(e);
                 break;
+        }
+    };
+
+    function hideShowPanel(action) { // hide/show video panel and cursor
+        if (action === 'hide' && !hideCanceled) {
+            videoPanelWrapper.classList.add('opacity-0');
+            videoPanelWrapper.classList.remove('opacity-100');
+            wrapper.classList.add('cursor-none');
+        } else {
+            videoPanelWrapper.classList.add('opacity-100');
+            videoPanelWrapper.classList.remove('opacity-0');
+            wrapper.classList.remove('cursor-none');
         }
     };
 

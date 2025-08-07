@@ -3,5 +3,9 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(function({ addVariant }) {
+      addVariant('my-variant', '&:my-custom'); // або що потрібно
+    })
+  ],
 };

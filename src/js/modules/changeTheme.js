@@ -3,24 +3,37 @@ const changeTheme = (toggle) => {
         theme = localStorage.getItem('theme');
 
     if(toggle === false) {
-        if (!theme) {
-            localStorage.setItem('theme', 'light');
-            html.classList.add('light');
-        } else {
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches && !theme) {
+            setDark();
+        } else if (localStorage.getItem('theme')){
             html.classList.remove('dark', 'light');
             html.classList.add(theme);
+        } else {
+            setLight();
         }
     } else {
+       toggleTheme();
+    };
+
+    function toggleTheme() {
         if (html.classList.contains('light')) {
-            html.classList.remove('light');
-            html.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
+            setDark();
         } else {
-            html.classList.remove('dark');
-            html.classList.add('light');
-            localStorage.setItem('theme', 'light');
+            setLight();
         }
-    }
+    };
+
+    function setDark() {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+    };
+
+    function setLight() {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        localStorage.setItem('theme', 'light');
+    };
 }
 
 export default changeTheme;
